@@ -1,28 +1,28 @@
 ﻿namespace BetterCoding.Patterns
 {
-    public interface IPipeline<S>
+    public interface ISynchronousPipeline<S>
     {
         S Process(S input);
-        IPipeline<S> Next(IPipeline<S> nextNode);
-        IPipeline<S> Next(Func<S, S> nextProcessor);
         S Execute(S input);
+        ISynchronousPipeline<S> Next(ISynchronousPipeline<S> nextNode);
+        ISynchronousPipeline<S> Next(Func<S, S> nextProcessor);
     }
 
-    public abstract class Pipeline<S> : IPipeline<S>
+    public abstract class SynchronousPipeline<S> : ISynchronousPipeline<S>
     {
-        public IPipeline<S>? NextNode { get; set; }
+        public ISynchronousPipeline<S>? NextNode { get; set; }
 
         public abstract S Process(S input);
 
-        public virtual IPipeline<S> Next(IPipeline<S> nextNode)
+        public virtual ISynchronousPipeline<S> Next(ISynchronousPipeline<S> nextNode)
         {
             NextNode = nextNode;
             return nextNode;
         }
 
-        public virtual IPipeline<S> Next(Func<S, S> nextProcessor)
+        public virtual ISynchronousPipeline<S> Next(Func<S, S> nextProcessor)
         {
-            var funcPipeline = new FuncPipeline<S>(nextProcessor);
+            var funcPipeline = new SynchronousFuncPipeline<S>(nextProcessor);
             return Next(funcPipeline);
         }
 
@@ -35,10 +35,10 @@
         }
     }
 
-    public class FuncPipeline<S> : Pipeline<S>
+    public class SynchronousFuncPipeline<S> : SynchronousPipeline<S>
     {
         private readonly Func<S, S>? _processor;
-        public FuncPipeline(Func<S, S> processor)
+        public SynchronousFuncPipeline(Func<S, S> processor)
         {
             _processor = processor;
         }
@@ -52,12 +52,12 @@
 
     public class PipelineSupervisor<S>
     {
-        private IPipeline<S>? _start;
-        public PipelineSupervisor(params IPipeline<S>[] pipelines)
+        private ISynchronousPipeline<S>? _start;
+        public PipelineSupervisor(params ISynchronousPipeline<S>[] pipelines)
         {
             if (pipelines == null || !pipelines.Any()) throw new ArgumentNullException();
 
-            IPipeline<S>? current = null;
+            ISynchronousPipeline<S>? current = null;
             for (var i = 0; i < pipelines.Length; i++)
             {
                 if (_start == null)

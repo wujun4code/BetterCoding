@@ -2,7 +2,7 @@
 
 namespace UsageDemo.Patterns.Pipeline
 {
-    public class LanguageDetect : Pipeline<string>
+    public class LanguageDetect : SynchronousPipeline<string>
     {
         public override string Process(string input)
         {
