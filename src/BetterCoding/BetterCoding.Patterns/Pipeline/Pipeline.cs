@@ -4,6 +4,7 @@
     {
         S Process(S input);
         IPipeline<S> Next(IPipeline<S> nextNode);
+        IPipeline<S> Next(Func<S, S> nextProcessor);
         S Execute(S input);
     }
 
@@ -19,6 +20,12 @@
             return nextNode;
         }
 
+        public virtual IPipeline<S> Next(Func<S, S> nextProcessor)
+        {
+            var funcPipeline = new FuncPipeline<S>(nextProcessor);
+            return Next(funcPipeline);
+        }
+
         public virtual S Execute(S input)
         {
             var s = Process(input);
@@ -28,15 +35,30 @@
         }
     }
 
+    public class FuncPipeline<S> : Pipeline<S>
+    {
+        private readonly Func<S, S>? _processor;
+        public FuncPipeline(Func<S, S> processor)
+        {
+            _processor = processor;
+        }
+
+        public override S Process(S input)
+        {
+            if (_processor == null) throw new InvalidOperationException();
+            return _processor(input);
+        }
+    }
+
     public class PipelineSupervisor<S>
     {
-        private IPipeline<S> _start;
+        private IPipeline<S>? _start;
         public PipelineSupervisor(params IPipeline<S>[] pipelines)
         {
             if (pipelines == null || !pipelines.Any()) throw new ArgumentNullException();
 
-            IPipeline<S> current = null;
-            for ( var i = 0; i < pipelines.Length; i++) 
+            IPipeline<S>? current = null;
+            for (var i = 0; i < pipelines.Length; i++)
             {
                 if (_start == null)
                 {
@@ -52,7 +74,7 @@
             }
         }
 
-        public S Execute(S input) 
+        public S Execute(S input)
         {
             return _start.Execute(input);
         }

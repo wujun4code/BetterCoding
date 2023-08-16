@@ -5,7 +5,7 @@ using BetterCoding.Patterns;
 
 var startPipeline = new LanguageDetect();
 
-startPipeline.Next(new Translation()).Next(new EndLine());
+startPipeline.Next(new Translation()).Next(s => $"{s}, ya").Next(new EndLine());
 
 var processedText = startPipeline.Execute("hello");
 Console.WriteLine(processedText);
