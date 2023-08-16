@@ -76,6 +76,7 @@
 
         public S Execute(S input)
         {
+            if (_start == null) return input;
             return _start.Execute(input);
         }
     }
