@@ -10,7 +10,7 @@ namespace UsageDemo.Patterns.Pipeline
             {
                 case "hello":
                     return "你好";
-                case "wrold":
+                case "world":
                     return "世界";
             }
             return input;
