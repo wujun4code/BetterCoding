@@ -1,7 +1,6 @@
 name: publish to nuget
 on:
   push:
-  pull_request:
     branches:
       - main # Default release branch
 env:
