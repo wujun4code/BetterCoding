@@ -14,13 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:     
       - uses: actions/checkout@v3
-      - name: echo
-        shell: bash
-        env: # Or as an environment variable
-          nuget_api_key: ${{ secrets.NUGET_API_KEY }}
-        run: |
-            example-command "$nuget_api_key"
-
       - name: set up .NET
         uses: actions/setup-dotnet@v3
       - name: Install dependencies
