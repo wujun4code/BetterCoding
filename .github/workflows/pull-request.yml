@@ -1,0 +1,23 @@
+name: publish to nuget
+on:
+  pull_request:
+    branches:
+      - main # Default release branch
+      - 'releases/**'
+env:
+  ## Sets environment variable
+  project: src/BetterCoding/BetterCoding.sln
+jobs:
+  publish:
+    name: build, pack & publish
+    runs-on: ubuntu-latest
+    steps:     
+      - uses: actions/checkout@v3
+      - name: set up .NET
+        uses: actions/setup-dotnet@v3
+      - name: Install dependencies
+        run: dotnet restore $project
+      - name: Build
+        run: dotnet build $project --configuration Release --no-restore
+      - name: Test
+        run: dotnet test $project --no-restore --verbosity normal
