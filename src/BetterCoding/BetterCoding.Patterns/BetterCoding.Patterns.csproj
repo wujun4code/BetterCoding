@@ -4,7 +4,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <PackageVersion>1.0.0-alpha1</PackageVersion>
+    <LangVersion>10.0</LangVersion>
+    <PackageVersion>0.0.1-beta</PackageVersion>
+    <Title>Design patterns hosted by Better Coding</Title>
+    <Authors>Honlsoft</Authors>
+    <Description>Provides design patterns in .NET.</Description>
+    <Copyright>Better Coding@wujun4code</Copyright>
+    <PackageProjectUrl>https://github.com/wujun4code/BetterCoding</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/wujun4code/BetterCoding</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>
