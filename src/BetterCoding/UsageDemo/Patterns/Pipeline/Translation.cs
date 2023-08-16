@@ -2,7 +2,7 @@
 
 namespace UsageDemo.Patterns.Pipeline
 {
-    public class Translation : Pipeline<string>
+    public class Translation : SynchronousPipeline<string>
     {
         public override string Process(string input)
         {

@@ -3,81 +3,64 @@
     public interface IPipeline<S>
     {
         S Process(S input);
-        IPipeline<S> Next(IPipeline<S> nextNode);
-        IPipeline<S> Next(Func<S, S> nextProcessor);
         S Execute(S input);
+        ISynchronousPipeline<S> Next(ISynchronousPipeline<S> nextNode);
+        ISynchronousPipeline<S> Next(Func<S, S> nextProcessor);
+
+        Task<S> ProcessAsync(S input);
+        Task<S> ExecuteAsync(S input);
+        IAsynchronousPipeline<S> Next(IAsynchronousPipeline<S> nextNode);
+        IAsynchronousPipeline<S> Next(Func<S, Task<S>> nextProcessor);
     }
 
     public abstract class Pipeline<S> : IPipeline<S>
     {
-        public IPipeline<S>? NextNode { get; set; }
-
+        public ISynchronousPipeline<S>? NextSynchronousNode { get; set; }
+        public IAsynchronousPipeline<S>? NextAsynchronousNode { get; set; }
         public abstract S Process(S input);
 
-        public virtual IPipeline<S> Next(IPipeline<S> nextNode)
-        {
-            NextNode = nextNode;
-            return nextNode;
-        }
-
-        public virtual IPipeline<S> Next(Func<S, S> nextProcessor)
-        {
-            var funcPipeline = new FuncPipeline<S>(nextProcessor);
-            return Next(funcPipeline);
-        }
-
-        public virtual S Execute(S input)
-        {
-            var s = Process(input);
-            if (NextNode != null)
-                s = NextNode.Execute(s);
-            return s;
-        }
-    }
-
-    public class FuncPipeline<S> : Pipeline<S>
-    {
-        private readonly Func<S, S>? _processor;
-        public FuncPipeline(Func<S, S> processor)
-        {
-            _processor = processor;
-        }
-
-        public override S Process(S input)
-        {
-            if (_processor == null) throw new InvalidOperationException();
-            return _processor(input);
-        }
-    }
-
-    public class PipelineSupervisor<S>
-    {
-        private IPipeline<S>? _start;
-        public PipelineSupervisor(params IPipeline<S>[] pipelines)
-        {
-            if (pipelines == null || !pipelines.Any()) throw new ArgumentNullException();
-
-            IPipeline<S>? current = null;
-            for (var i = 0; i < pipelines.Length; i++)
-            {
-                if (_start == null)
-                {
-                    _start = pipelines[i];
-                }
-
-                if (current == null)
-                {
-                    current = pipelines[i];
-                }
-                else
-                    current = current.Next(pipelines[i]);
-            }
-        }
+        public abstract Task<S> ProcessAsync(S input);
 
         public S Execute(S input)
         {
-            if (_start == null) return input;
-            return _start.Execute(input);
+            var s = Process(input);
+            if (NextSynchronousNode != null)
+                s = NextSynchronousNode.Execute(s);
+            return s;
+        }
+
+        public async Task<S> ExecuteAsync(S input)
+        {
+            var s = await ProcessAsync(input);
+            if (NextAsynchronousNode != null)
+            {
+                s = await NextAsynchronousNode.ExecuteAsync(s);
+            }
+            return s;
+        }
+
+        public virtual ISynchronousPipeline<S> Next(ISynchronousPipeline<S> nextNode)
+        {
+            NextSynchronousNode = nextNode;
+            return nextNode;
+        }
+
+        public virtual ISynchronousPipeline<S> Next(Func<S, S> nextProcessor)
+        {
+            var funcPipeline = new SynchronousFuncPipeline<S>(nextProcessor);
+            return Next(funcPipeline);
+        }
+
+        public virtual IAsynchronousPipeline<S> Next(IAsynchronousPipeline<S> nextNode)
+        {
+            NextAsynchronousNode = nextNode;
+            return nextNode;
+        }
+
+        public virtual IAsynchronousPipeline<S> Next(Func<S, Task<S>> nextProcessor)
+        {
+            var funcPipeline = new AsynchronousFuncPipeline<S>(nextProcessor);
+            return Next(funcPipeline);
         }
     }
 }

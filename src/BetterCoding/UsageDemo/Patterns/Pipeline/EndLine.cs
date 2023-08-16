@@ -8,5 +8,10 @@ namespace UsageDemo.Patterns.Pipeline
         {
             return $"{input}.";
         }
+
+        public override Task<string> ProcessAsync(string input)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
