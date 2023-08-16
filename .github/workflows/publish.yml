@@ -15,12 +15,12 @@ jobs:
         env:
           project: src/BetterCoding/BetterCoding.Patterns/BetterCoding.Patterns.csproj
       - name: Install dependencies
-        run: dotnet restore $project
+        run: dotnet restore ${project}
       - name: Build
-        run: dotnet build $project --configuration Release --no-restore
+        run: dotnet build ${project} --configuration Release --no-restore
       - name: Test
-        run: dotnet test $project --no-restore --verbosity normal
+        run: dotnet test ${project} --no-restore --verbosity normal
       - name: Pack
-        run: dotnet pack $project --no-build --configuration Release --output .
+        run: dotnet pack ${project} --no-build --configuration Release --output .
       - name: PushNuget
         run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
