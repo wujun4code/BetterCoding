@@ -2,7 +2,7 @@
 using UsageDemo.Patterns.Pipeline;
 using BetterCoding.Patterns;
 
-
+#region Pipeline 
 var startPipeline = new LanguageDetect();
 
 startPipeline.Next(new Translation()).Next(s => $"{s}, ya").Next(new EndLine());
@@ -19,3 +19,5 @@ processedText = pipelineSupervisor.Execute("world");
 
 Console.WriteLine(processedText);
 Console.ReadLine();
+#endregion
+

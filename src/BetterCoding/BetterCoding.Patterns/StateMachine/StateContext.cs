@@ -18,14 +18,19 @@
 
     public abstract class StateContext<E, A>
     {
-        protected StateBase<E, A> _state;
+        protected StateBase<E, A>? _state;
 
-        public StateBase<E, A> State
+        public StateBase<E, A>? State
         {
             get
             {
                 return _state;
             }
+        }
+
+        public StateContext() 
+        {
+
         }
 
         public StateContext(StateBase<E, A> state)
@@ -35,7 +40,7 @@
 
         public virtual void Execute(A action)
         {
-            _state.Execute(action);
+            _state?.Execute(action);
         }
 
         public virtual void MoveState(StateBase<E, A> newState)
