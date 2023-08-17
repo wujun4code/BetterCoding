@@ -10,10 +10,11 @@ startPipeline.Next(new Translation()).Next(s => $"{s}, ya").Next(new EndLine());
 var processedText = startPipeline.Execute("hello");
 Console.WriteLine(processedText);
 
-var pipelineSupervisor = new PipelineSupervisor<string>(
+var pipelineSupervisor = new SynchronousPipelineSupervisor<string>(
     new LanguageDetect(),
     new Translation(),
     new EndLine());
+
 processedText = pipelineSupervisor.Execute("world");
 
 Console.WriteLine(processedText);

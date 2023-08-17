@@ -50,10 +50,10 @@
         }
     }
 
-    public class PipelineSupervisor<S>
+    public class SynchronousPipelineSupervisor<S>
     {
         private ISynchronousPipeline<S>? _start;
-        public PipelineSupervisor(params ISynchronousPipeline<S>[] pipelines)
+        public SynchronousPipelineSupervisor(params ISynchronousPipeline<S>[] pipelines)
         {
             if (pipelines == null || !pipelines.Any()) throw new ArgumentNullException();
 
