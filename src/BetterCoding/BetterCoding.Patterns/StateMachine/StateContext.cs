@@ -12,8 +12,23 @@
         }
 
         public abstract A[] AcceptedActions { get; }
-        public abstract bool Accept(A action);
-        public abstract void Execute(A action);
+        public virtual bool Accept(A action)
+        {
+            return AcceptedActions.Contains(action);
+        }
+
+        public virtual void Execute(A action)
+        {
+            if (!Accept(action)) throw new InvalidOperationException($"can not execute {action?.GetType()} on state {GetType()}");
+        }
+
+        public virtual string StateFriendlyName
+        {
+            get
+            {
+                return GetType().Name;
+            }
+        }
     }
 
     public abstract class StateContext<E, A>

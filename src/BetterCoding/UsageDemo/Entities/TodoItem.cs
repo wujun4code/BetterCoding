@@ -9,6 +9,16 @@
         public DateTime Created { get; set; }
 
         public DateTime Updated { get; set; }
-        public int Status { get; set; }
+        public TodoItemStatus Status { get; set; }
+    }
+
+    public enum TodoItemStatus : int
+    {
+        Draft,
+        New,
+        InProgress,
+        Done,
+        Deleted,
+        Closed,
     }
 }

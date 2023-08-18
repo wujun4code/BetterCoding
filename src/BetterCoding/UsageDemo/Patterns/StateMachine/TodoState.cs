@@ -1,5 +1,4 @@
 ﻿using BetterCoding.Patterns.StateMachine;
-using System.Linq;
 using UsageDemo.Entities;
 
 namespace UsageDemo.Patterns.StateMachine
@@ -7,29 +6,10 @@ namespace UsageDemo.Patterns.StateMachine
     public abstract class TodoStateBase<TEntity, TAction> : StateBase<TEntity, TAction>
     {
         public TodoStateBase(
-            StateContext<TEntity, TAction> context,
-          TEntity entity) : base(context, entity)
+            StateContext<TEntity, TAction> context, 
+            TEntity entity) : base(context, entity)
         {
 
-        }
-
-        public override TAction[] AcceptedActions => new TAction[0];
-        public override bool Accept(TAction action)
-        {
-            return AcceptedActions.Contains(action);
-        }
-
-        public override void Execute(TAction action)
-        {
-            if (!Accept(action)) throw new InvalidOperationException($"can not execute {action?.GetType()} on state {GetType()}");
-        }
-
-        public virtual string StateFriendlyName
-        {
-            get
-            {
-                return GetType().Name;
-            }
         }
     }
 
@@ -38,8 +18,10 @@ namespace UsageDemo.Patterns.StateMachine
         Add,
         Delete,
         Start,
+        ResetToNotStarted,
         Done,
         Close,
+        Discard,
     }
 
     public class EditingState : TodoStateBase<TodoItem, TodoAction>
@@ -55,7 +37,13 @@ namespace UsageDemo.Patterns.StateMachine
         {
             TodoAction.Add,
             TodoAction.Delete,
+            TodoAction.Discard,
         };
+
+        public override void Execute(TodoAction action)
+        {
+            base.Execute(action);
+        }
     }
 
     public class NotStartedState : TodoStateBase<TodoItem, TodoAction>
@@ -76,15 +64,95 @@ namespace UsageDemo.Patterns.StateMachine
         };
     }
 
+    public class InProgressState : TodoStateBase<TodoItem, TodoAction>
+    {
+        public InProgressState(
+            StateContext<TodoItem, TodoAction> context,
+            TodoItem todoItem) : base(context, todoItem)
+        {
+
+        }
+
+        public override TodoAction[] AcceptedActions => new TodoAction[]
+        {
+            TodoAction.ResetToNotStarted,
+            TodoAction.Delete,
+            TodoAction.Done,
+            TodoAction.Close
+        };
+    }
+
+    public class DoneState : TodoStateBase<TodoItem, TodoAction>
+    {
+        public DoneState(
+            StateContext<TodoItem, TodoAction> context,
+            TodoItem todoItem) : base(context, todoItem)
+        {
+
+        }
+
+        public override TodoAction[] AcceptedActions => new TodoAction[]
+        {
+            TodoAction.ResetToNotStarted,
+            TodoAction.Delete,
+        };
+    }
+
+    public class DeletedState : TodoStateBase<TodoItem, TodoAction>
+    {
+        public DeletedState(
+            StateContext<TodoItem, TodoAction> context,
+            TodoItem todoItem) : base(context, todoItem)
+        {
+
+        }
+
+        public override TodoAction[] AcceptedActions => new TodoAction[]
+        {
+            TodoAction.ResetToNotStarted,
+        };
+    }
+
+    public class ClosedState : TodoStateBase<TodoItem, TodoAction>
+    {
+        public ClosedState(
+            StateContext<TodoItem, TodoAction> context,
+            TodoItem todoItem) : base(context, todoItem)
+        {
+
+        }
+
+        public override TodoAction[] AcceptedActions => new TodoAction[]
+        {
+            TodoAction.ResetToNotStarted,
+            TodoAction.Delete,
+        };
+    }
+
     public class TodoStateContext : StateContext<TodoItem, TodoAction>
     {
         public TodoStateContext(TodoItem todoItem)
         {
-            if (todoItem.Id < 1)
-                _state = new EditingState(this, todoItem);
-            else if (todoItem.Status == 1)
+            switch (todoItem.Status)
             {
-                _state = new NotStartedState(this, todoItem);
+                case TodoItemStatus.Draft:
+                    _state = new EditingState(this, todoItem);
+                    break;
+                case TodoItemStatus.New:
+                    _state = new NotStartedState(this, todoItem);
+                    break;
+                case TodoItemStatus.InProgress:
+                    _state = new InProgressState(this, todoItem);
+                    break;
+                case TodoItemStatus.Done:
+                    _state = new DoneState(this, todoItem);
+                    break;
+                case TodoItemStatus.Deleted:
+                    _state = new ClosedState(this, todoItem);
+                    break;
+                case TodoItemStatus.Closed:
+                    _state = new DeletedState(this, todoItem);
+                    break;
             }
         }
 
