@@ -51,4 +51,35 @@
             return _processor(input);
         }
     }
+
+    public class AsynchronousPipelineSupervisor<S>
+    {
+        private IAsynchronousPipeline<S>? _start;
+        public AsynchronousPipelineSupervisor(params IAsynchronousPipeline<S>[] pipelines)
+        {
+            if (pipelines == null || !pipelines.Any()) throw new ArgumentNullException();
+
+            IAsynchronousPipeline<S>? current = null;
+            for (var i = 0; i < pipelines.Length; i++)
+            {
+                if (_start == null)
+                {
+                    _start = pipelines[i];
+                }
+
+                if (current == null)
+                {
+                    current = pipelines[i];
+                }
+                else
+                    current = current.Next(pipelines[i]);
+            }
+        }
+
+        public async Task<S> Execute(S input)
+        {
+            if (_start == null) return input;
+            return await _start.ExecuteAsync(input);
+        }
+    }
 }
