@@ -1,5 +1,4 @@
-﻿using BetterCoding.Patterns;
-
+﻿using BetterCoding.Patterns.Pipeline;
 namespace UsageDemo.Patterns.Pipeline
 {
     public class MockGoogleTranslation : AsynchronousPipeline<string>

@@ -1,4 +1,4 @@
-﻿namespace BetterCoding.Patterns
+﻿namespace BetterCoding.Patterns.Pipeline
 {
     public interface ISynchronousPipeline<S>
     {

@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using BetterCoding.Patterns;
+using BetterCoding.Patterns.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UsageDemo.Entities;
