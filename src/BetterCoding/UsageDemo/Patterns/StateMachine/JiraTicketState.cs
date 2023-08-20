@@ -1,5 +1,4 @@
 ﻿using BetterCoding.Patterns.StateMachine;
-using Microsoft.Extensions.Logging;
 using UsageDemo.Entities;
 
 namespace UsageDemo.Patterns.StateMachine
