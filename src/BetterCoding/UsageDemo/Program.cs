@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using BetterCoding.Patterns.FactoryMethod;
 using BetterCoding.Patterns.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UsageDemo.Entities;
+using UsageDemo.Patterns.FactoryMethod;
 using UsageDemo.Patterns.Pipeline;
 using UsageDemo.Patterns.StateMachine;
 
@@ -76,6 +78,13 @@ catch (Exception ex)
 {
     logger.LogError(ex, ex.Message);
 }
+#endregion
+
+#region Factory Method
+Factory<ITranslator, string, Task<string>> factory = new GoogleTranslationFactory();
+Console.WriteLine(await factory.Execute("hello"));
+factory = new OpenAITranslatorFactory();
+Console.WriteLine(await factory.Execute("world"));
 #endregion
 
 Console.ReadLine();
