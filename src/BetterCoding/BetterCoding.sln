@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33927.249
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCoding.Patterns", "BetterCoding.Patterns\BetterCoding.Patterns.csproj", "{2840CC19-F807-4E98-9FD1-693F07F5D73B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterCoding.Patterns", "BetterCoding.Patterns\BetterCoding.Patterns.csproj", "{2840CC19-F807-4E98-9FD1-693F07F5D73B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{D3D58FD9-548B-4AC5-86E0-D15FE8970D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageDemo", "UsageDemo\UsageDemo.csproj", "{94EDFBAC-4575-4D1B-A9DE-828DDD9C2973}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsageDemo", "UsageDemo\UsageDemo.csproj", "{94EDFBAC-4575-4D1B-A9DE-828DDD9C2973}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCoding.Builders.ElasticSearch", "BetterCoding.Builders.ElasticSearch\BetterCoding.Builders.ElasticSearch.csproj", "{B44E62F0-CABE-4A44-8BD0-665A784B3938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{94EDFBAC-4575-4D1B-A9DE-828DDD9C2973}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94EDFBAC-4575-4D1B-A9DE-828DDD9C2973}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94EDFBAC-4575-4D1B-A9DE-828DDD9C2973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B44E62F0-CABE-4A44-8BD0-665A784B3938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B44E62F0-CABE-4A44-8BD0-665A784B3938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B44E62F0-CABE-4A44-8BD0-665A784B3938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B44E62F0-CABE-4A44-8BD0-665A784B3938}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2840CC19-F807-4E98-9FD1-693F07F5D73B} = {D3D58FD9-548B-4AC5-86E0-D15FE8970D73}
+		{B44E62F0-CABE-4A44-8BD0-665A784B3938} = {D3D58FD9-548B-4AC5-86E0-D15FE8970D73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7067B84B-5C69-46C8-AE49-C78A13F27660}
