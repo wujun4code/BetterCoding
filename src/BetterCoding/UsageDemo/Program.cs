@@ -39,6 +39,14 @@ var pipelineSupervisor = new SynchronousPipelineSupervisor<string>(
 processedText = pipelineSupervisor.Execute("world");
 
 Console.WriteLine(processedText);
+
+var asynchronousPipelineSupervisor = new AsynchronousPipelineSupervisor<string>(
+    new MockOpenAITranslation(),
+    new MockGoogleTranslation());
+
+processedText = await asynchronousPipelineSupervisor.ExecuteAsync("hello");
+
+Console.WriteLine(processedText);
 #endregion
 
 #region State Machine
