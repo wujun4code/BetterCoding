@@ -76,7 +76,7 @@
             }
         }
 
-        public async Task<S> Execute(S input)
+        public async Task<S> ExecuteAsync(S input)
         {
             if (_start == null) return input;
             return await _start.ExecuteAsync(input);
